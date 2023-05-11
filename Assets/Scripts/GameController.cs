@@ -4,15 +4,29 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static TwoPlayer;
 
+
+/// <summary>
+/// This code is a provided as an example. It could be archictected differently
+/// to be production ready.
+/// </summary>
 public class GameController : MonoBehaviour, IGameplayActions
 {
+
+    /// <summary>
+    /// Game object for player 1
+    /// </summary>
     [SerializeField]
     GameObject player1GameObject;
 
+    /// <summary>
+    /// Game object for player 2
+    /// </summary>
     [SerializeField]
     GameObject player2GameObject;
 
-
+    /// <summary>
+    /// The input action map for handling user input with the keyboard.
+    /// </summary>
     private TwoPlayer inputs;
 
     public float moveSpeed = 2.0f;
@@ -33,14 +47,16 @@ public class GameController : MonoBehaviour, IGameplayActions
     // Start is called before the first frame update
     void Awake()
     {
+        // Create an instance of the input action map.
         inputs = new TwoPlayer();
-
-
     }
 
     private void OnEnable()
     {
         inputs.gameplay.Enable();
+
+        // Register callbacks for the input handlers.
+        // There are two methods in the interface.
         inputs.gameplay.SetCallbacks(this);
     }
 
@@ -82,6 +98,10 @@ public class GameController : MonoBehaviour, IGameplayActions
         player1GameObject.transform.position += move * scaledMoveSpeed;
     }
 
+    /// <summary>
+    /// Restricting movement to the x-axis only.
+    /// </summary>
+    /// <param name="direction"></param>
     private void MoveHorizontallyPlayer2(Vector2 direction)
     {
         if (direction.sqrMagnitude < 0.01)
@@ -90,7 +110,6 @@ public class GameController : MonoBehaviour, IGameplayActions
         // check if the direction being moved will go past the horizontal limits
         float xPos = player1GameObject.transform.position.x;
         float moveAmount = direction.x * moveSpeed;
-
 
         if (direction.x < 0 && (xPos + moveAmount < xMinPlayer2)) // direction < 0 - left
         {
@@ -107,18 +126,17 @@ public class GameController : MonoBehaviour, IGameplayActions
         player2GameObject.transform.position += move * scaledMoveSpeed;
     }
 
-
+    #region Input handlers
     public void OnKeyboardLeft(InputAction.CallbackContext context)
     {
-        Debug.Log("player 1 move");
         // read the value for the "move" action each event call
         moveAmountPlayer1 = context.ReadValue<Vector2>();
     }
 
     public void OnKeyboardRight(InputAction.CallbackContext context)
     {
-        Debug.Log("player 2 move");
         // read the value for the "move" action each event call
         moveAmountPlayer2 = context.ReadValue<Vector2>();
     }
+    #endregion
 }
