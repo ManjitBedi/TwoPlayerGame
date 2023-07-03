@@ -8,6 +8,12 @@ using static TwoPlayer;
 /// <summary>
 /// This code is a provided as an example. It could be archictected differently
 /// to be production ready.
+///
+/// Different actions maps being used for each player:
+/// <list type="bullet">
+/// <item>keys A &amp; D</item>
+/// <item>keys left arrow &amp; right arrow</item> 
+/// </list>
 /// </summary>
 public class GameController : MonoBehaviour, IGameplayActions
 {
